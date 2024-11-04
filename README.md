@@ -81,3 +81,16 @@ Step 3: Access the Transcription Result
 	•	Use further nodes in your workflow to parse or store the transcription result as needed.
 
 
+## Mermaid Diagram
+	graph TD
+	    A[Start] --> B[Install Docker]
+	    B --> C[Pull Whisper API Docker Image]
+	    C --> D[Run Whisper API Container]
+	    D --> E[Verify the API is Running]
+	    E --> F[Set Up n8n HTTP Request Node]
+	    F --> G[Send Audio/Video Files to Transcribe]
+	    G --> H[Receive Transcription Response]
+	    H --> I[End]
+
+
+<img width="213" alt="image" src="https://github.com/user-attachments/assets/b4c42717-1842-4c1c-92b8-4efc42db3da6">
