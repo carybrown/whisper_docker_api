@@ -1,7 +1,9 @@
-Below are the instructions for wrapping OpenAI’s Whisper API in a Docker Instance for use on your Mac with Apple Silicon.
+Below are the instructions for wrapping OpenAI’s Whisper API in a Docker Instance for use on your Mac with Apple Silicon.  
 My need here was to do transcription locally without going out to OpenAI to transcribe video and audio files.
 
-Here we have wrapped the Whisper model in a RESTful API. Here’s a step-by-step guide:
+
+
+Here, we have wrapped the Whisper model in a RESTful API. Here’s a step-by-step guide:
 
 #1. Install Docker
 
