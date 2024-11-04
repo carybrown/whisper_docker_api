@@ -15,7 +15,9 @@ Use the following command to pull the Whisper API image. If there’s an officia
 
 	docker pull ghcr.io/openai/whisper-api
 
-#3. Run the Whisper API Container
+#3. Download the Dockerfile and api.py files from the repository and include in the /whisper-api folder created in the last step.
+
+#4. Run the Whisper API Container
 
 Run the container, exposing a port for the API (e.g., 9000; it could be whatever you need that doesn't conflict with existing containers), which you’ll call from n8n. If the container requires it, you can add environment variables.
 
@@ -30,7 +32,7 @@ This command:
 • Maps your host’s port 9000 to the container’s port 9000 (adjust as needed)
 • Runs the container in detached mode (-d), so it runs in the background
 
-#4. Verify the API is Running
+#5. Verify the API is Running
 
 To ensure the container is running, use:
 
@@ -41,6 +43,7 @@ You should see the whisper-api container listed. Now, test the API by sending a 
 Test the API with curl.  You can test the API by sending a video or audio file to the /transcribe endpoint:
 
 	curl -X POST -F "file=@/path/to/yourfile.mp4" http://localhost:9000/transcribe
+
 
 ## To access the Whisper transcription API from n8n using an n8n HTTP Request node, you can configure it as follows:
 
