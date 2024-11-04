@@ -13,38 +13,68 @@ Make sure you have Docker installed and running on your system.
 
 Use the following command to pull the Whisper API image. If there’s an official image by OpenAI, you can specify it, but here’s an example for a commonly used Whisper API image on GitHub:
 
-docker pull ghcr.io/openai/whisper-api
+	docker pull ghcr.io/openai/whisper-api
 
 #3. Run the Whisper API Container
 
 Run the container, exposing a port for the API (e.g., 9000; it could be whatever you need that doesn't conflict with existing containers), which you’ll call from n8n. If the container requires it, you can add environment variables.
 
-docker run -d \
-  --name whisper-api \
-  -p 9000:9000 \
-  ghcr.io/openai/whisper-api
+	docker run -d \
+	  --name whisper-api \
+	  -p 9000:9000 \
+	  ghcr.io/openai/whisper-api
 
 This command:
 
-	•	Names the container whisper-api
-	•	Maps your host’s port 9000 to the container’s port 9000 (adjust as needed)
-	•	Runs the container in detached mode (-d), so it runs in the background
+• Names the container whisper-api
+• Maps your host’s port 9000 to the container’s port 9000 (adjust as needed)
+• Runs the container in detached mode (-d), so it runs in the background
 
 #4. Verify the API is Running
 
 To ensure the container is running, use:
 
-docker ps
+	docker ps
 
 You should see the whisper-api container listed. Now, test the API by sending a request to http://localhost:9000.
 
-#5. Set Up n8n to Use Whisper API
+Test the API with curl.  You can test the API by sending a video or audio file to the /transcribe endpoint:
 
-In n8n, create an HTTP request node to interact with the Whisper API. Configure the node to send audio or video files to the whisper-api endpoint. Here’s an example configuration:
+	curl -X POST -F "file=@/path/to/yourfile.mp4" http://localhost:9000/transcribe
 
-	•	Method: POST
-	•	URL: http://localhost:9000/transcribe
-	•	Headers: Content-Type: multipart/form-data
-	•	Body: Upload your audio file in the request body.
+## To access the Whisper transcription API from n8n using an n8n HTTP Request node, you can configure it as follows:
 
-Whisper will then process the file, and you’ll receive a transcription as the response, which you can use in your n8n workflows.
+Step 1: Configure the HTTP Request Node in n8n
+
+1. Add an HTTP Request Node to your n8n workflow.
+2. Set the Method to POST.
+3. Set the URL to your Whisper API endpoint:  http://localhost:9000/transcribe
+4. Set the Body Content Type to Form-Data.
+5. Add a Form-Data Field for the file you want to transcribe:
+	• Parameter Name: file (this should match the field name expected by the API).
+	• Type: File.
+	• File Field Value: You can use the file path or a reference to a file that has been previously uploaded or exists in n8n.
+6. Select the Input File:
+	• If the file is stored locally or in n8n’s file storage, you can reference its path here.
+	• Alternatively, if the file is part of the workflow, ensure the file has been uploaded or generated in a previous node (e.g., an S3 Download node if coming from a cloud bucket).
+
+Example Configuration
+
+Setting	Value
+Method	POST
+URL	http://localhost:9000/transcribe
+Content Type	Form-Data
+Form Data Field Name	file
+Form Data Field Type	File
+File Field Value	/path/to/yourfile.mp4
+
+Step 2: Run the Workflow
+
+Run the workflow to trigger the HTTP Request node. If everything is set up correctly, the Whisper API should receive the video file, extract the audio, process the transcription, and return the result as JSON.
+
+Step 3: Access the Transcription Result
+
+	•	The transcription result should appear as the response from the HTTP Request node.
+	•	Use further nodes in your workflow to parse or store the transcription result as needed.
+
+
